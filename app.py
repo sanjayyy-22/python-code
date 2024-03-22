@@ -8,7 +8,7 @@ acceleration=70
 
 def openLeft(x,alpha,beta):
     if(x<alpha):
-        return 1
+        return 0
     if alpha<x and x<=beta:
         return ((beta-x)/(beta-alpha))
     else:
@@ -70,15 +70,15 @@ def compare(TC1,TC2):
 def rule(NLSD,NMSD,NSSD,ZESD,PSSD,PMSD,PLSD,NLAC,NMAC,NSAC,ZEAC,PSAC,PMAC,PLAC):
     PLTC1=min(NLSD,ZEAC)
     PLTC2=min(ZESD,NLAC)
-    PLTC=compare(PLTC1,PLTC2)
+    PLTC=max(PLTC1,PLTC2)
 
     PMTC1=min(NMSD,ZEAC)
     PMTC2=min(ZESD,NMAC)
-    PMTC=compare(PMTC1,PMTC2)
+    PMTC=max(PMTC1,PMTC2)
 
     PSTC1=min(NSSD,PSAC)
     PSTC2=min(ZESD,NSAC)
-    PSTC=compare(PSTC1, PSTC2)
+    PSTC=max(PSTC1, PSTC2)
 
     NSTC=min(PSSD,NSAC)
     NLTC=min(PLSD,ZEAC)
@@ -95,12 +95,12 @@ def areaTR(mu,a,b,c):
 
 def areaOL(mu,a,b):
     xOL=b-mu*(b-a)
-    return 0.5*mu*(b+xOL),b/2
+    return (0.5*(b-xOL)*mu)+(mu*xOL),b/2
 
 def areaOR(mu,a,b):
     xOR=(b-a)*mu+a
-    aOR=0.5*mu*((240-a)+(240-xOR))
-    return aOR,(240-a)/2+a
+    aOR=0.5*mu*((255-a)+(255-xOR))
+    return aOR,(255-a)/2+a
 
 def defuzzyfication(PLTC,PMTC,PSTC,NSTC,NLTC):
     areaPL=0
@@ -133,7 +133,7 @@ def defuzzyfication(PLTC,PMTC,PSTC,NSTC,NLTC):
 
     numerator = areaPL*cPL + areaPM*cPM + areaPS*cPS + areaNS*cNS + areaNL*cNL
     denominator = areaPL + areaPM + areaPS + areaNS + areaNL
-    if denominator ==0:
+    if denominator == 0:
         print("No rules exist to give the result")
         return 0
     else:
